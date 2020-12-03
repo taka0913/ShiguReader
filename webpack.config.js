@@ -7,6 +7,8 @@ const outputDirectory = 'dist';
 const portConfig = require('./src/config/port-config');
 const {http_port, dev_express_port } = portConfig;
 
+const fs = require('fs');
+
 const config = {
   entry: ['babel-polyfill', './src/client/index.js'],
   output: {
@@ -53,6 +55,11 @@ const config = {
     publicPath: "/",
     proxy: {
       '/api': `http://localhost:${dev_express_port}`
+    },
+    https: {
+      key: fs.readFileSync('/volume1/ShiguReader/ShiguReader/src/archive/privkey.pem'),
+      cert: fs.readFileSync('/volume1/ShiguReader/ShiguReader/src/archive/cert.pem'),
+      ca: fs.readFileSync('/volume1/ShiguReader/ShiguReader/src/archive/chain.pem')
     }
   },
   plugins: [
