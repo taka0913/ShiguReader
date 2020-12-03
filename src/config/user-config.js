@@ -9,37 +9,35 @@ const y = now.getFullYear();
 let mm = now.getMonth()+1;
 mm = ( mm < 10 ) ? ( "0" + ( mm ).toString() ) : ( mm ).toString();
 const fd = "good_"+ [y, mm, "01"].join("_");
-module.exports.good_folder = "D:\\_Happy_Lesson\\_Going_to_sort\\_good\\"+fd;
+module.exports.good_folder = "/volume1/books/_Happy_Lesson/_Going_to_sort/_good/"+fd;
 
 
 /**
  * OPTIONAL where to move file
  * 可选 手动漫画整理的时候，你想把不怎么喜欢的漫画移动到的位置
  */
-module.exports.not_good_folder = "D:\\_Happy_Lesson\\_Going_to_sort\\_not_good\\_Compressed_"+ y;
+module.exports.not_good_folder = "/volume1/books/_Happy_Lesson/_Going_to_sort/_not_good/_Compressed_"+ y;
 
 /** 
  * OPTIONAL all good folders  
  * 可选 喜欢的漫画的根目录，这个文件夹会用来判断你的喜好
  */
-module.exports.good_folder_root = "D:\\_Happy_Lesson\\_Going_to_sort\\_good"
+module.exports.good_folder_root = "/volume1/books/_Happy_Lesson/_Going_to_sort/_good"
 
 /** 
  * OPTIONAL all good folders  
  * 可选 不怎么喜欢的漫画的根目录，这个文件夹会用来判断你的喜好
  */
-module.exports.not_good_folder_root = "D:\\_Happy_Lesson\\_Going_to_sort\\_not_good"
+module.exports.not_good_folder_root = "/volume1/books/_Happy_Lesson/_Going_to_sort/_not_good"
 
 /**
  * OPTIONAL where to move file
  * 可选 手动漫画整理的时候，你可以移动的其他位置
  */
 module.exports.additional_folder = [
-    "D:\\_Happy_Lesson\\_Going_to_sort\\non-h",
-    "D:\\_AV\\_Picture",
-    "D:\_AV",
-    "E:\\_Temp_Music",
-    "E:\\_temp_comic",
+    "/volume1/books/_Happy_Lesson/_Going_to_sort/non-h",
+    "/volume1/books/_Picture",
+    "/volume1/books/cache"
 ];
 
 
