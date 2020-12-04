@@ -102,7 +102,7 @@ export default class VideoPlayer extends Component {
     }else{
       content = (
         <div className="video-player-container">
-          <video id="videoPlayer" controls> 
+          <video id="videoPlayer" controls controlsList="nodownload"> 
             <source src={url} type="video/mp4" onError={this.onError.bind(this)} />
           </video>
         </div>

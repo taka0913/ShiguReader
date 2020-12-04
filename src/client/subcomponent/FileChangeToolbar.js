@@ -242,7 +242,7 @@ export default class FileChangeToolbar extends Component {
     }
 
     renderDownloadLink(){
-        return (<a className="fa fa-fw fa-download" href={clientUtil.getDownloadLink(this.props.file)} />);
+        //return (<a className="fa fa-fw fa-download" href={clientUtil.getDownloadLink(this.props.file)} />);
     }
 
     renderMinifyZipButton(){
