@@ -1,5 +1,57 @@
 # ShiguReader
 
+![LoginPage](https://github.com/taka0913/ShiguReader/screenshot/img.gif)
+
+I have confirmed that my code works on Synology NAS.
+
+[Additional features]
+You need to install "react-recaptcha" with the following command.
+```
+npm install --save react-recaptcha
+```
+And change sitekey of "App.js".
+
+Input video to "/video" folder.
+The video will play randomly on the login page.
+Edit "index.html".
+```
+var imgURL = ["video/1.mp4", "video/2.mp4", "video/3.mp4", "video/4.mp4", "video/5.mp4", "video/6.mp4", "video/7.mp4", "video/8.mp4", "video/9.mp4", "video/10.mp4", "video/11.mp4", "video/12.mp4"];
+```
+
+You need set username and password1 of "user-config.js".
+```
+module.exports.home_user = ["user1", "user2", "user3", "user4"];
+module.exports.home_password = ["pass1", "pass2", "pass3", "pass4"];
+```
+Password2 is the date of the day.
+For example, December 5, 2020 is 2020125. 
+Do not force it into 8 digits by adding unnecessary 0s. For example, 20201205.
+
+Place the key for HTTPS connection in the location specified in "webpack.config.js".
+If you connect via HTTP, delete these codes.
+If you use the NAS function of synology, you can automatically renew the expiration date of the "Let's Encrypt" domain.
+```
+    https: {
+      key: fs.readFileSync('/volume1/ShiguReader/ShiguReader/src/archive/privkey.pem'),
+      cert: fs.readFileSync('/volume1/ShiguReader/ShiguReader/src/archive/cert.pem'),
+      ca: fs.readFileSync('/volume1/ShiguReader/ShiguReader/src/archive/chain.pem')
+```
+
+[Known issues]
+(issue1)
+All usernames and passwords are stored raw in cookie.This is a security issue.
+
+(issue2)
+The video played on the login screen will be played forever after login.
+Currently, after logging in, it is hidden by lowering the priority of the layer.
+This will slow down the page load.
+
+(issue3)
+There is no logout button.
+It's like "sword art online". hahaha...
+
+--------------------------------------------------------------
+
 [English](https://github.com/hjyssg/ShiguReader/blob/dev/README_English.md)
 
 
