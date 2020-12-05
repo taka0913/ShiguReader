@@ -7,6 +7,11 @@
 const now = new Date();
 const y = now.getFullYear();
 let mm = now.getMonth()+1;
+
+var year = now.getFullYear();
+var month = now.getMonth()+1;
+var day = now.getDate();
+
 mm = ( mm < 10 ) ? ( "0" + ( mm ).toString() ) : ( mm ).toString();
 const fd = "good_"+ [y, mm, "01"].join("_");
 module.exports.good_folder = "/volume1/books/_Happy_Lesson/_Going_to_sort/_good/"+fd;
@@ -118,7 +123,9 @@ module.exports.view_img_folder = true;
 //global password
 //when set, user need to enter password to use ShiguReader
 //全局密码，设置以后用户必须输入密码才能打开网站
-module.exports.home_password = ""
+module.exports.home_user = ["user1", "user2", "user3", "user4"];
+module.exports.home_password = ["pass1", "pass2", "pass3", "pass4"];
+module.exports.home_password2 = [[year, month, day].join('')];
 
 //do not display a zip if it has no image files or music files
 module.exports.filter_empty_zip = true;

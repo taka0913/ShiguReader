@@ -265,40 +265,48 @@ export default class AdminPage extends Component {
             </div>
         }
 
-        return (
-            <div className="admin-container container">
-                {this.renderPasswordInput()}
+        if(clientUtil.isAuthorized()){
+            return (
+                <div className="admin-container container">
+                    {this.renderPasswordInput()}
 
-                <div className="admin-section">
-                    <div className="admin-section-title"> Pregenerate Thumbnail and Update Internal Database</div>
-                    <div className="admin-section-content">
-                        <RadioButtonGroup checked={folder_list.indexOf(this.state.prePath)} 
-                                        options={folder_list} name="pregenerate" onChange={this.onPathChange.bind(this)}/>
-                        <input className="admin-intput" ref={pathInput => this.pathInputRef = pathInput} placeholder="...or any other path"/>
-                        <div className="submit-button" onClick={this.onPrenerate.bind(this)}>Full Update</div>
-                        <div className="submit-button" onClick={this.onPrenerate.bind(this, true)}>Fast Update</div>
+                    <div className="admin-section">
+                        <div className="admin-section-title"> Pregenerate Thumbnail and Update Internal Database</div>
+                        <div className="admin-section-content">
+                            <RadioButtonGroup checked={folder_list.indexOf(this.state.prePath)} 
+                                            options={folder_list} name="pregenerate" onChange={this.onPathChange.bind(this)}/>
+                            <input className="admin-intput" ref={pathInput => this.pathInputRef = pathInput} placeholder="...or any other path"/>
+                            <div className="submit-button" onClick={this.onPrenerate.bind(this)}>Full Update</div>
+                            <div className="submit-button" onClick={this.onPrenerate.bind(this, true)}>Fast Update</div>
+                        </div>
                     </div>
-                </div>
 
-                <div className="admin-section">
-                    <div className="admin-section-title" title="only keep thumbnail and delete other files"> Clean Cache</div>
-                    <div className="admin-section-content">
-                        {cacheInfo}
-                        <div className="submit-button" onClick={this.cleanCache.bind(this)}>clean</div>
-                        {/* <div className="submit-button" onClick={this.cleanCache.bind(this, "minized")}>clean and make thumbnail file smaller to save distk space</div> */}
+                    <div className="admin-section">
+                        <div className="admin-section-title" title="only keep thumbnail and delete other files"> Clean Cache</div>
+                        <div className="admin-section-content">
+                            {cacheInfo}
+                            <div className="submit-button" onClick={this.cleanCache.bind(this)}>clean</div>
+                            {/* <div className="submit-button" onClick={this.cleanCache.bind(this, "minized")}>clean and make thumbnail file smaller to save distk space</div> */}
+                        </div>
                     </div>
-                </div>
 
-                {this.renderHistory()}
+                    {this.renderHistory()}
 
-                {this.renderMinifyQueue()}
+                    {this.renderMinifyQueue()}
 
-                {this.renderRemoteShutDown()}
+                    {this.renderRemoteShutDown()}
 
-                <div className="author-link"> 
-                        <a className="fab fa-github" title="Aji47's Github" href="https://github.com/hjyssg/ShiguReader" target="_blank"> Created By Aji47 </a> 
-                </div>
-            </div>)
+                    <div className="author-link"> 
+                            <a className="fab fa-github" title="Aji47's Github" href="https://github.com/hjyssg/ShiguReader" target="_blank"> Created By Aji47 </a> 
+                    </div>
+                </div>)
+        }
+        else{
+            return (
+                <div className="admin-container container">
+                    {this.renderPasswordInput()}
+                </div>)
+        }
         
     }
 }

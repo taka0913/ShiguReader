@@ -2,6 +2,7 @@ const util = require("@common/util");
 const Cookie = require("js-cookie");
 const _ = require("underscore");
 const filesizeUitl = require('filesize');
+var count = 0;
 
 module.exports.filesizeUitl = function(num){
     if(isNaN(num)){
@@ -105,7 +106,23 @@ module.exports.isAllowedToEnter = function(){
 
     const Cookie = require("js-cookie");
     const password =  Cookie.get('home-password');
-    return userConfig.home_password === password;
+    
+    const user =  Cookie.get('home-user');
+    const password2 =  Cookie.get('home-password2');
+    const Recaptcha =  Cookie.get('home-Recaptcha');
+    const button =  Cookie.get('home-button');
+    
+    if(button === "1"){
+        if(userConfig.home_user.indexOf(user) !== -1 && count <= 30){
+            if(userConfig.home_password[userConfig.home_user.indexOf(user)] === password && userConfig.home_password2.indexOf(password2) !== -1 && Recaptcha === "1"){
+                return (true);
+            }
+        }
+        Cookie.set("home-button", "0", { expires: 3 });
+        count = count + 1;
+    }
+
+    return (false);
 }
 
 // module.exports.cleanSearchStr = function(str){

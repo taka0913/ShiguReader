@@ -21,6 +21,14 @@ import 'react-toastify/dist/ReactToastify.css';
 import { GlobalContext } from './globalContext'
 import Sender from './Sender';
 
+import Recaptcha from 'react-recaptcha';
+
+window.onload = function() {
+    let spinner = document.getElementById('my-spinner');
+   
+    // .box に .loaded を追加してローディング表示を消す
+    spinner.classList.add('loaded');
+}
 
 // http://localhost:3000/
 class App extends Component {
@@ -139,14 +147,86 @@ class App extends Component {
         this.forceUpdate();
     }
 
+    getUserInput(){
+        const pathInput = ReactDOM.findDOMNode(this.userInputRef);
+        const text = (pathInput && pathInput.value) || "";
+        return text;
+    }
+
+    setUserCookie(){
+        const text = this.getUserInput();
+        Cookie.set("home-user", text, { expires: 3 });
+        this.forceUpdate();
+    }
+
+    getPassword2Input(){
+        const pathInput = ReactDOM.findDOMNode(this.password2InputRef);
+        const text = (pathInput && pathInput.value) || "";
+        return text;
+    }
+
+    setPassword2Cookie(){
+        const text = this.getPassword2Input();
+        Cookie.set("home-password2", text, { expires: 3 });
+        this.forceUpdate();
+    }
+
+    verifyCallback(response) {
+        console.log("verifyed");
+        if(response){
+            Cookie.set("home-Recaptcha", "1", { expires: 3 });
+            this.forceUpdate();
+        }
+    }
+    callback() {
+        console.log('wait verify');
+        Cookie.set("home-button", "0", { expires: 3 });
+        Cookie.set("home-user", "", { expires: 3 });
+        Cookie.set("home-password", "", { expires: 3 });
+        Cookie.set("home-password2", "", { expires: 3 });
+        Cookie.set("home-button", "0", { expires: 3 });
+        this.forceUpdate();
+    }
+    buttonclick() {
+        Cookie.set("home-button", "1", { expires: 3 });
+        this.forceUpdate();
+    }
+
     renderPasswordInput(){
         let content = (<React.Fragment>
-                        <div className="admin-section-title">Enter password to use Shigureader</div>
-                        <div className="admin-section-content">
-                        <input className="admin-intput" ref={pathInput => this.passwordInputRef = pathInput}
-                                    placeholder="...type here"  onChange={this.setPasswordCookie.bind(this)}/>
-                        </div>
-                        </React.Fragment>);
+
+            <div className="admin-section-content">
+
+            <div className="admin-section-title">　</div>
+
+            <input className="admin-intput" ref={pathInput => this.userInputRef = pathInput}
+                        placeholder="username"  onChange={this.setUserCookie.bind(this)}/>
+            
+            <div className="admin-section-title">　</div>
+            
+            <input type="password" className="admin-intput" ref={pathInput => this.passwordInputRef = pathInput}
+                        placeholder="password1"  onChange={this.setPasswordCookie.bind(this)}/>
+            
+            <div className="admin-section-title">　</div>
+            
+            <input type="password" className="admin-intput" ref={pathInput => this.password2InputRef = pathInput}
+                        placeholder="password2"  onChange={this.setPassword2Cookie.bind(this)}/>
+            
+            <div className="admin-section-title">　</div>
+
+            <Recaptcha
+                sitekey="6LfgwdUZAAAAAINplv0NIEzPb7kcj-fPn37h4VQk"
+                render="explicit"
+                verifyCallback={this.verifyCallback.bind(this)}
+                onloadCallback={this.callback.bind(this)}
+            />
+
+            <div className="admin-section-title">　</div>
+            
+            <input type="button" value="Login" onClick={this.buttonclick.bind(this)}/>
+            </div>
+
+            </React.Fragment>);
 
         return (
             <div className="home-admin-section">
