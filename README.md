@@ -1,6 +1,6 @@
 # ShiguReader
 
-![LoginPage](https://github.com/taka0913/ShiguReader/screenshot/img.gif)
+![LoginPage](https://github.com/taka0913/ShiguReader/blob/dev/screenshot/img.gif)
 
 I have confirmed that my code works on Synology NAS.
 
