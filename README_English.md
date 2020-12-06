@@ -35,7 +35,8 @@ Read Comic/Play Music and Video on all platforms
 ##### Quick Start
 
 ```bash
-# If you do not have nodejs installed, please go to https://nodejs.org/
+# If you do not have Node.js installed, please go to https://nodejs.org/
+# Node.js 14 is recommended
 
 # install imagemagick  from https://imagemagick.org
 
@@ -45,7 +46,7 @@ git clone https://github.com/hjyssg/ShiguReader
 ## change user config
 ## modify src/path-config.ini  src/user-config.js accoding to your own comic files location
 
-## windows default cmd is not working
+## Windows default cmd is not working
 ## Please install Git and Git Bash  https://git-scm.com/
 
 # open Git Bash
@@ -62,6 +63,14 @@ npm run dev
 # open the link shown on the git bash
 
 ```
+
+| software      | must have | note                           |
+|---------------|-----------|--------------------------------|
+| Node.js       | yes       |                                |
+| image magick  | no        | nice to have                |
+| sevenzip      | *         | Windows does not need to install. Must have for *nix    |
+| everything    | no        | nice to have for Windows    |
+| git bash      | *         | must have for Windows, no for *nix |
 
 ##### Safety
 ShiguReader is not safe when being accessed from the public IP. The server is not prepared for any cyber attack.

@@ -53,8 +53,8 @@ export default class AdminPage extends Component {
 
     handleCacheRes(res){
         if (!res.isFailed()) {
-            let { totalSize, cacheNum } = res.json;
-            this.setState({totalSize, cacheNum})
+            let { totalSize, cacheNum, thumbCount } = res.json;
+            this.setState({totalSize, cacheNum, thumbCount})
         }else{
             this.failedTimes++;
         }
@@ -251,9 +251,10 @@ export default class AdminPage extends Component {
 
     render(){
         document.title = "Admin"
-        const folder_list = this.state.dirs.concat("All_Pathes");
+        let folder_list = this.state.dirs.slice();
+        folder_list.unshift("All_Pathes");
 
-        const { totalSize, cacheNum } = this.state
+        const { totalSize, cacheNum, thumbCount } = this.state
         const size = totalSize && clientUtil.filesizeUitl(totalSize);
         let cacheInfo;
 
@@ -273,11 +274,12 @@ export default class AdminPage extends Component {
                     <div className="admin-section">
                         <div className="admin-section-title"> Pregenerate Thumbnail and Update Internal Database</div>
                         <div className="admin-section-content">
+                            <div className=""> {`thumbnail: ${thumbCount||0}` } </div>
                             <RadioButtonGroup checked={folder_list.indexOf(this.state.prePath)} 
                                             options={folder_list} name="pregenerate" onChange={this.onPathChange.bind(this)}/>
                             <input className="admin-intput" ref={pathInput => this.pathInputRef = pathInput} placeholder="...or any other path"/>
-                            <div className="submit-button" onClick={this.onPrenerate.bind(this)}>Full Update</div>
-                            <div className="submit-button" onClick={this.onPrenerate.bind(this, true)}>Fast Update</div>
+                            <div className="submit-button" onClick={this.onPrenerate.bind(this)}>Full Update (Regenerate all data and thumbnail)</div>
+                            <div className="submit-button" onClick={this.onPrenerate.bind(this, true)}>Fast Update (Only generate new file)</div>
                         </div>
                     </div>
 

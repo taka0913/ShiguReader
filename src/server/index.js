@@ -29,7 +29,7 @@ const { isHiddenFile } = serverUtil;
 
 const { fullPathToUrl, generateContentUrl, isExist,  getHomePath } = pathUtil;
 const { isImage, isCompress, isMusic, arraySlice, 
-        getCurrentTime, isDisplayableInExplorer, isDisplayableInOnebook } = util;
+        getCurrentTime, isDisplayableInExplorer, isDisplayableInOnebook, escapeRegExp } = util;
 
 //set up path
 const rootPath = pathUtil.getRootPath();
@@ -150,12 +150,21 @@ async function init() {
                             _.isEqual(previous_history_obj.path_will_scan, path_will_scan) && 
                             previous_history_obj.total_count;
 
-    let beg = (new Date).getTime()
-    const results = await fileiterator(path_will_scan, { 
+    let beg = (new Date).getTime();
+
+    const everything_connector = require("../tools/everything_connector");
+    const scan_otption = { 
         filter: shouldWatchForNormal, 
         doLog: true,
-        estimated_total
-    });
+        estimated_total,
+        port: userConfig.everything_http_server_port
+    };
+    let results = userConfig.everything_http_server_port && 
+                    isWindows() && 
+                    await everything_connector.getAllFileinPath(path_will_scan, scan_otption);
+    if(!results){
+        results = await fileiterator(path_will_scan, scan_otption);
+    }
     results.pathes = results.pathes.concat(home_pathes);
     let end1 = (new Date).getTime();
     console.log(`${(end1 - beg)/1000}s to read local dirs`);
@@ -183,6 +192,7 @@ async function init() {
     console.log(`${(end3 - end1)/1000}s  to read thumbnail dirs`);
     initThumbnailDb(thumbnail_pathes);
 
+    //todo: chokidar will slow the server down very much when it init async
     setUpFileWatch(path_will_watch);
 
     try{
@@ -238,6 +248,8 @@ function getThumbnailFromThumbnailFolder(outputPath){
 function getThumbCount(){
     return _.keys(thumbnailDb).length;
 }
+
+global.getThumbCount = getThumbCount;
 
 function getExt(p){
     const ext = path.extname(p).toLowerCase();
@@ -322,6 +334,9 @@ function setUpFileWatch (path_will_scan){
         .on('addDir', addCallBack)
         .on('unlinkDir', deleteCallBack);
 
+    //todo: it takes 3 min to get ready for 130k files
+    watcher.on('ready', () => console.log('[chokidar] Initial scan complete.'))
+
     //also for cache files
     const cacheWatcher = chokidar.watch(cachePath, {
         ignored: shouldIgnoreForCache,
@@ -394,7 +409,7 @@ serverUtil.common.getStat = getStat;
 
 //-----------------thumbnail related-----------------------------------
 
-app.post("/api/tagFirstImagePath", (req, res) => {
+app.post("/api/tagFirstImagePath", async (req, res) => {
     const author = req.body && req.body.author;
     const tag = req.body && req.body.tag;
     if (!author && !tag) {
@@ -513,7 +528,7 @@ async function extractThumbnailFromZip(filePath, res, mode, config) {
                         config.counter++;
                     }
                 } else {
-                    console.error("[extractThumbnailFromZip extract exec failed]", code);
+                    console.error("[extractThumbnailFromZip extract exec failed]", stderrForThumbnail);
                     handleFail("extract exec failed");
                 }
             }
@@ -527,11 +542,20 @@ async function extractThumbnailFromZip(filePath, res, mode, config) {
 
 //  a huge back ground task 
 //  it generate all thumbnail and will be slow
+
+let pregenerateThumbnails_lock = false;
+
 app.post('/api/pregenerateThumbnails', async (req, res) => {
     let path = req.body && req.body.path;
     if(!path){
+        res.send({failed: true, reason: "NOT PATH"});
+        return;
+    }else if(pregenerateThumbnails_lock){
+        res.send({failed: true, reason: "Already Running"});
         return;
     }
+
+    pregenerateThumbnails_lock = true;
 
     const fastUpdateMode = req.body && req.body.fastUpdateMode;
 
@@ -553,9 +577,19 @@ app.post('/api/pregenerateThumbnails', async (req, res) => {
         totalFiles = _.shuffle(totalFiles);
     }
 
-    for(let ii = 0; ii < totalFiles.length; ii++){
-        const filePath = totalFiles[ii];
-        extractThumbnailFromZip(filePath, null, "pre-generate", config);
+    res.send({failed: false});
+
+    console.log("begin pregenerateThumbnails")
+
+    try{
+        for(let ii = 0; ii < totalFiles.length; ii++){
+            const filePath = totalFiles[ii];
+            await extractThumbnailFromZip(filePath, null, "pre-generate", config);
+        }
+    }catch(e){
+
+    }finally{
+        pregenerateThumbnails_lock = false;
     }
 });
 
@@ -701,8 +735,15 @@ app.post('/api/getGeneralInfo', async (req, res) => {
     };
 
     let folderArr = [userConfig.good_folder, userConfig.not_good_folder].concat(userConfig.additional_folder);
-    folderArr = await pathUtil.filterNonExist(folderArr);
 
+    //dulicate code as /api/homePagePath
+    folderArr = folderArr.filter(e => {
+        if(e){
+            const reg = escapeRegExp(e);
+            //check if pathes really exist by checking there is file in the folder
+            return !!getFileCollection().findOne({'filePath': { '$regex' : reg }, isDisplayableInExplorer: true });
+        }
+    })
 
     result.good_folder = folderArr.includes(userConfig.good_folder)? userConfig.good_folder : "";
     result.not_good_folder = folderArr.includes(userConfig.not_good_folder)?  userConfig.not_good_folder : "";

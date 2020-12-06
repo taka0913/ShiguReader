@@ -223,11 +223,13 @@ export default class ExplorerPage extends Component {
 
         this.bindUserInteraction();
 
-        Sender.postWithPromise('/api/getGoodAuthorNames', {}, res =>{
-            this.setState({
-                goodAuthors: res.goodAuthors,
-                otherAuthors: res.otherAuthors
-            })
+        Sender.post('/api/getGoodAuthorNames', {}, res =>{
+            if(!res.isFailed()){
+                this.setState({
+                    goodAuthors: res.json.goodAuthors,
+                    otherAuthors: res.json.otherAuthors
+                })
+            }
         });
     }
 
@@ -572,6 +574,10 @@ export default class ExplorerPage extends Component {
         let videos = filteredVideos;
         let files = filteredFiles;
 
+        if(this.getMode() !== MODE_HOME){
+            dirs.sort();
+        }
+
         try {
             files = this.sortFiles(files, sortOrder);
             videos = this.sortFiles(videos, sortOrder);
@@ -594,7 +600,7 @@ export default class ExplorerPage extends Component {
             const toUrl = clientUtil.getExplorerLink(item);
             const text = this.getMode() === MODE_HOME ? item: getBaseName(item);
             const result =  this.getOneLineListItem(<i className="far fa-folder"></i>, text, item);
-            return  <Link target="_blank" to={toUrl}  key={item}>{result}</Link>;
+            return  <Link to={toUrl}  key={item}>{result}</Link>;
         });
 
         //seperate av from others
@@ -624,8 +630,6 @@ export default class ExplorerPage extends Component {
                 return  <Link target="_blank" to={toUrl}  key={item}>{result}</Link>;
             });
         }
-
-
 
         //! !todo if the file is already an image file
         files = this.getFileInPage(files);
