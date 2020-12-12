@@ -860,7 +860,7 @@ export default class ExplorerPage extends Component {
     }
 
     renderPregenerateButton(){
-        if(this.getMode() === MODE_EXPLORER){
+        /*if(this.getMode() === MODE_EXPLORER){
             const text = "generate thumbnail"
             return (
                <span key="thumbnail-button" className="thumbnail-button exp-top-button" onClick={()=>AdminUtil.askPregenerate(this.getPathFromQuery())}> 
@@ -868,7 +868,7 @@ export default class ExplorerPage extends Component {
                <span> {text} </span>
                </span>
             );
-        }
+        }*/
     }
 
     renderFileCount(filteredFiles, filteredVideos){
@@ -996,9 +996,9 @@ export default class ExplorerPage extends Component {
     setWebTitle(){
         const mode = this.getMode();
         if(mode === MODE_HOME){
-            document.title = "ShiguReader";
+            document.title = "SynologyNAS";
         }else{
-            document.title = this.getTextFromQuery()|| "ShiguReader";
+            document.title = this.getTextFromQuery()|| "SynologyNAS";
         }
     }
 

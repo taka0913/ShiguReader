@@ -111,13 +111,22 @@ module.exports.isAllowedToEnter = function(){
     const password2 =  Cookie.get('home-password2');
     const Recaptcha =  Cookie.get('home-Recaptcha');
     const button =  Cookie.get('home-button');
-    
+
+    const now = new Date();
+    var time_hour = now.getHours();
+
     if(button === "1"){
-        if(userConfig.home_user.indexOf(user) !== -1 && count <= 30){
+        if((time_hour<=7 || time_hour >=24) && (userConfig.home_user.indexOf(user) != 0 || userConfig.home_password[userConfig.home_user.indexOf(user)] !== password)){
+            alert("0時～7時まではログインできません");
+            Cookie.set("home-button", "0", { expires: 3 });
+            return (false);
+        }
+        else if(userConfig.home_user.indexOf(user) !== -1 && count <= 30){
             if(userConfig.home_password[userConfig.home_user.indexOf(user)] === password && userConfig.home_password2.indexOf(password2) !== -1 && Recaptcha === "1"){
                 return (true);
             }
         }
+        alert("入力された情報が正しくありません");
         Cookie.set("home-button", "0", { expires: 3 });
         count = count + 1;
     }
