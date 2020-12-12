@@ -1,6 +1,6 @@
 {
   "name": "ShiguReader",
-  "version": "1.4.2",
+  "version": "1.5.0",
   "description": "All-in-one solution for local doujin/anime/music file",
   "main": "src/server/index.js",
   "bin": "src/server/index.js",
@@ -44,6 +44,7 @@
     "js-cookie": "^2.2.1",
     "jsonfile": "^6.1.0",
     "lokijs": "^1.5.8",
+    "mecab-async": "^0.1.2",
     "ml-naivebayes": "^4.0.0",
     "p-limit": "^2.1.0",
     "promise-fs": "^2.1.1",

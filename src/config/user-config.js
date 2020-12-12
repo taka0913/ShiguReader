@@ -8,7 +8,7 @@ const config = {};
  */
 const now = new Date();
 const y = now.getFullYear();
-let mm = now.getMonth()+1;
+let mm = now.getMonth() + 1;
 
 var year = now.getFullYear();
 var month = now.getMonth()+1;
@@ -51,7 +51,7 @@ config.additional_folder = [
 //----------------- below section used by developer-----------------------------
 
 config.workspace_name = "workspace";
- 
+
 config.cache_folder_name = "cache";
 
 config.thumbnail_folder_name = "thumbnails";
@@ -82,12 +82,10 @@ config.keep_zoom_scale = false;
 //Naive password when access remotely
 config.file_change_password = "2020";
 
-//-------------------------------experimental feature 
-
-//实验性功能
+//-------------------------------experimental feature  实验性功能
 //If you use Everything
 //you can enable its http server, ShiguReader will use its data and increase performance
-config.everything_http_server_port = "5001"
+config.everything_http_server_port = ""
 
 //----------------------------image compress parameter-------------------------------------------------
 
@@ -108,7 +106,7 @@ config.img_convert_quality_for_middle_size_file = 70;
 
 //超过这个大小，再转换的时候同时压低分辨率。
 //现在太多漫画，扫描出来一来4000*6000。完全没有必要
-config.img_convert_huge_threshold = 6 ; //in MB
+config.img_convert_huge_threshold = 6; //in MB
 
 //小于这个大小，没有转换的必要
 config.img_convert_min_threshold = 1.5; //in MB
