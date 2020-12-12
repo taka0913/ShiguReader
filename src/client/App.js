@@ -196,6 +196,7 @@ class App extends Component {
         Cookie.set("home-password", "", { expires: 3 });
         Cookie.set("home-password2", "", { expires: 3 });
         Cookie.set("home-button", "0", { expires: 3 });
+        Cookie.set("home-Recaptcha", "0", { expires: 3 });
         this.forceUpdate();
     }
     buttonclick() {
