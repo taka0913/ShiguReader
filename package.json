@@ -93,7 +93,7 @@
     "less": "^3.9.0",
     "less-loader": "^4.1.0",
     "mocha": "^8.2.1",
-    "nodemon": "^1.18.9",
+    "nodemon": "^2.0.6",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
     "url-loader": "^1.0.1",
