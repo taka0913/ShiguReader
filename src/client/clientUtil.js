@@ -37,7 +37,15 @@ const getBaseName = module.exports.getBaseName = function (fp) {
 };
 
 module.exports.getFileUrl = function (url) {
-    return "../" + encodeFileUrl(url);
+    if (!url || url === "NOT_THUMBNAIL_AVAILABLE") {
+        return "";
+    }
+  
+    if (!url.includes("/thumbnails/") && !url.includes("/cache/") ) {
+        return getDownloadLink(url);
+    } else {
+        return "../" + encodeFileUrl(url);
+    }
 }
 
 const encodeFileUrl = module.exports.encodeFileUrl = function (url) {
@@ -185,7 +193,7 @@ module.exports.getVideoPlayerLink = function (path) {
     return "/videoPlayer/?p=" + encodeURIComponent(path);
 }
 
-module.exports.getDownloadLink = function (path) {
+const getDownloadLink = module.exports.getDownloadLink = function (path) {
     if (!path) { return ""; }
     return "/api/download/?p=" + encodeURIComponent(path);
 }
@@ -234,4 +242,10 @@ module.exports.getHistoryFromCookie = function () {
     });
 
     return history;
+}
+
+module.exports.replaceUrlHash = function(newHash){
+    // console.assert((location.origin + location.pathname + location.search + location.hash) === location.href, "[replaceUrlHash] url error")
+    const newUrl = location.href.replace(location.hash, "#" + newHash);
+    location.replace(newUrl);
 }
