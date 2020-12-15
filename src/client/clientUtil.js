@@ -41,10 +41,10 @@ module.exports.getFileUrl = function (url) {
         return "";
     }
   
-    if (!url.includes("/thumbnails/") && !url.includes("/cache/") ) {
-        return getDownloadLink(url);
+    if (url.includes("thumbnails/") || url.includes("cache/") ) {
+        return "../" + encodeFileUrl(url); 
     } else {
-        return "../" + encodeFileUrl(url);
+        return getDownloadLink(url);
     }
 }
 
