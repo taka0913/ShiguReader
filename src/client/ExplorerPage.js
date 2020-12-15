@@ -71,7 +71,8 @@ export default class ExplorerPage extends Component {
         const parsed = reset ? {} : queryString.parse(location.hash);
         const pageIndex = parseInt(parsed.pageIndex) || 1;
         const isRecursive = !!(parsed.isRecursive === "true");
-        const sortOrder = parsed.sortOrder || TIME_DOWN;
+        //const sortOrder = parsed.sortOrder || TIME_DOWN;
+        const sortOrder = parsed.sortOrder || FILENAME_UP;
         const showVideo = !!(parsed.showVideo === "true");
         const showFolderThumbnail = !!(!(parsed.showFolderThumbnail == "true"));
 
