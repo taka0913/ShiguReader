@@ -57,9 +57,9 @@ const config = {
       '/api': `http://localhost:${dev_express_port}`
     },
     https: {
-      key: fs.readFileSync('/volume1/ShiguReader/ShiguReader/src/archive/privkey.pem'),
-      cert: fs.readFileSync('/volume1/ShiguReader/ShiguReader/src/archive/cert.pem'),
-      ca: fs.readFileSync('/volume1/ShiguReader/ShiguReader/src/archive/chain.pem')
+      key: fs.readFileSync('/usr/syno/etc/certificate/_archive/bIvepg/privkey.pem'),
+      cert: fs.readFileSync('/usr/syno/etc/certificate/_archive/bIvepg/cert.pem'),
+      ca: fs.readFileSync('/usr/syno/etc/certificate/_archive/bIvepg/chain.pem')
     }
   },
   plugins: [
