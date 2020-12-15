@@ -73,7 +73,7 @@ export default class ExplorerPage extends Component {
         const isRecursive = !!(parsed.isRecursive === "true");
         const sortOrder = parsed.sortOrder || TIME_DOWN;
         const showVideo = !!(parsed.showVideo === "true");
-        const showFolderThumbnail = !!(parsed.showFolderThumbnail == "true");
+        const showFolderThumbnail = !!(!(parsed.showFolderThumbnail == "true"));
 
         return {
             perPageItemNum: getPerPageItemNumber(),
